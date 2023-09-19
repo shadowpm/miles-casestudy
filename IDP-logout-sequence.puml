@@ -1,0 +1,24 @@
+@startuml
+autonumber
+actor "User" as User
+participant "FE *.miles.com" as FE
+participant "Auth GW/MS" as BE
+
+User -> FE
+activate FE
+
+FE -> BE: Check if the user is authenticated
+activate BE
+BE -> FE: User is authenticated (202)
+deactivate BE
+
+FE --> User: Show user specific data
+User -> FE: Click on logout button
+
+FE -> BE: Send logout request
+activate BE
+BE --> FE: Delete http-only "Access token" and "Refresh token" cookies
+deactivate BE
+FE --> User: Render the page for a guest user
+
+@enduml
